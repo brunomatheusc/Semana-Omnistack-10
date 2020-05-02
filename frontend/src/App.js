@@ -4,12 +4,14 @@ import './global.css';
 import './App.css';
 import './Sidebar.css';
 import './Main.css';
+import api from './service/api';
 
 function App() {
     const[github_username, setGithubUsername] = useState('');    
     const[techs, setTechs] = useState('');    
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
+    const [devs, setDevs] = useState([]);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -22,13 +24,34 @@ function App() {
         });
     }, []);
 
+    useEffect(() => {
+        async function loadDevs() {
+            try {
+                const response = await api.get('/devs');
+
+                setDevs(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        loadDevs();
+    }, []);
+
     async function handleAddDev(e) {
         e.preventDefault();
 
         try {
-            // const response = 
+            const response = await api.post(`/devs`, {
+                github_username, techs, latitude, longitude
+            });
+
+            setDevs([...devs, response.data]);
+
+            setGithubUsername('');
+            setTechs('');
         } catch (error) {
-            
+            console.log(error);
         }
     }
     
@@ -37,7 +60,7 @@ function App() {
             <aside>
                 <strong>Cadastrar</strong>
                 
-                <form action="">
+                <form onSubmit={ handleAddDev }>
                     <div className="input-block">
                         <label htmlFor="">Usuário do Github</label>
                         <input type="text" value={ github_username } onChange={ e => setGithubUsername(e.target.value) } name="github_username" id="github_username" required/>
@@ -66,61 +89,21 @@ function App() {
             
             <main>
                 <ul>
-                    <li className="dev-item">
+                { devs.map(dev => (
+                    <li className="dev-item" key={ dev._id }>
                         <header>
-                            <img src="https://avatars2.githubusercontent.com/u/7659227?s=460&u=c1539b73d0dedc8b5b5e40ccf91c1125d82c4f2b&v=4" alt="Bruno Matheus"/>
+                            <img src={ dev.avatar_url } alt={ dev.name }/>
 
                             <div className="user-info">
-                                <strong>Bruno Matheus</strong>
-                                <span>React, Node.js, PHP</span>
+                                <strong>{ dev.name }</strong>
+                                <span>{ dev.techs.join(', ') }</span>
                             </div>
                         </header>
 
-                        <p>CTO na @Rocketseat. Apaixonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/brunomatheusc">Acessar perfil</a>
+                        <p>{ dev.bio }</p>
+                        <a href={`https://github.com/${dev.github_username}`}>Acessar perfil</a>
                     </li>
-
-                    <li className="dev-item">
-                        <header>
-                            <img src="https://avatars2.githubusercontent.com/u/7659227?s=460&u=c1539b73d0dedc8b5b5e40ccf91c1125d82c4f2b&v=4" alt="Bruno Matheus"/>
-
-                            <div className="user-info">
-                                <strong>Bruno Matheus</strong>
-                                <span>React, Node.js, PHP</span>
-                            </div>
-                        </header>
-
-                        <p>CTO na @Rocketseat. Apaixonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/brunomatheusc">Acessar perfil</a>
-                    </li>
-
-                    <li className="dev-item">
-                        <header>
-                            <img src="https://avatars2.githubusercontent.com/u/7659227?s=460&u=c1539b73d0dedc8b5b5e40ccf91c1125d82c4f2b&v=4" alt="Bruno Matheus"/>
-
-                            <div className="user-info">
-                                <strong>Bruno Matheus</strong>
-                                <span>React, Node.js, PHP</span>
-                            </div>
-                        </header>
-
-                        <p>CTO na @Rocketseat. Apaixonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/brunomatheusc">Acessar perfil</a>
-                    </li>
-
-                    <li className="dev-item">
-                        <header>
-                            <img src="https://avatars2.githubusercontent.com/u/7659227?s=460&u=c1539b73d0dedc8b5b5e40ccf91c1125d82c4f2b&v=4" alt="Bruno Matheus"/>
-
-                            <div className="user-info">
-                                <strong>Bruno Matheus</strong>
-                                <span>React, Node.js, PHP</span>
-                            </div>
-                        </header>
-
-                        <p>CTO na @Rocketseat. Apaixonado pelas melhores tecnologias</p>
-                        <a href="https://github.com/brunomatheusc">Acessar perfil</a>
-                    </li>
+                ))}
                 </ul>
             </main>
         </div>
