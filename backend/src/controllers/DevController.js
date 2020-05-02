@@ -1,6 +1,7 @@
 const api = require('../services/api');
 const Dev = require('../models/Dev');
 const parseString = require('../utils/parseString');
+const findDev = require('../utils/findDev');
 
 module.exports = {
     async store (req, res) {
@@ -35,6 +36,26 @@ module.exports = {
     },
 
     async show(req, res) {
+        const { github_username } = req.query;
 
+        const dev = findDev(github_username);
+
+        if (!dev || !dev.length) {
+            return res.status(400).json({ msg: "Usuário não encontrado" });
+        }
+
+        return res.json(dev);
+    },
+
+    async update(req, res) {
+        return this.store(req, res);
+    },
+
+    async destroy(req, res) {
+        const { github_username } = req.query;
+
+        await Dev.remove({ github_username });
+
+        return res.json({ msg: "Usuário removido" });
     }
 }
