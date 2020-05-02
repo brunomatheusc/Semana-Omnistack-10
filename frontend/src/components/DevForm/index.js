@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import './styles.css';
+import { Form, InputBlock, InputGroup, Input, Button, Label } from './styles';
 
 export default function DevForm({ onSubmit }) {
     const[github_username, setGithubUsername] = useState('');    
@@ -29,30 +29,30 @@ export default function DevForm({ onSubmit }) {
     }
 
     return (
-        <form onSubmit={ handleSubmit }>
-            <div className="input-block">
-                <label htmlFor="">Usuário do Github</label>
-                <input type="text" value={github_username} onChange={e => setGithubUsername(e.target.value)} name="github_username" id="github_username" required />
-            </div>
+        <Form onSubmit={ handleSubmit }>
+            <InputBlock>
+                <Label>Usuário do Github</Label>
+                <Input type="text" value={github_username} onChange={e => setGithubUsername(e.target.value)} name="github_username" id="github_username" required />
+            </InputBlock>
 
-            <div className="input-block">
-                <label htmlFor="">Tecnologias</label>
-                <input type="text" value={techs} onChange={e => setTechs(e.target.value)} name="techs" id="techs" required />
-            </div>
+            <InputBlock>
+                <Label>Tecnologias</Label>
+                <Input type="text" value={techs} onChange={e => setTechs(e.target.value)} name="techs" id="techs" required />
+            </InputBlock>
 
-            <div className="input-group">
-                <div className="input-block">
-                    <label htmlFor="">Latitude</label>
-                    <input type="number" value={latitude} onChange={e => setLatitude(e.target.value)} name="latitude" id="latitude" required />
-                </div>
+            <InputGroup>
+                <InputBlock>
+                    <Label>Latitude</Label>
+                    <Input type="number" value={latitude} onChange={e => setLatitude(e.target.value)} name="latitude" id="latitude" required />
+                </InputBlock>
 
-                <div className="input-block">
-                    <label htmlFor="">Longitude</label>
-                    <input type="number" value={longitude} onChange={e => setLongitude(e.target.value)} name="longitude" id="longitude" required />
-                </div>
-            </div>
+                <InputBlock>
+                    <Label>Longitude</Label>
+                    <Input type="number" value={longitude} onChange={e => setLongitude(e.target.value)} name="longitude" id="longitude" required />
+                </InputBlock>
+            </InputGroup>
 
-            <button type="submit">Salvar</button>
-        </form>
+            <Button>Salvar</Button>
+        </Form>
     );
 }

@@ -1,23 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import './styles.css';
+// import './styles.css';
 
-// import { Container } from './styles';
+import { Container, Header, Avatar, UserInfo, Name, Techs, Bio } from './styles';
 
 export default function DevItem({ dev }) {
     return (
-        <li className="dev-item">
-            <header>
-                <img src={dev.avatar_url} alt={dev.name} />
+        <Container className="dev-item">
+            <Header>
+                <Avatar src={dev.avatar_url} alt={dev.name} />
 
-                <div className="user-info">
-                    <strong>{dev.name}</strong>
-                    <span>{dev.techs.join(', ')}</span>
-                </div>
-            </header>
+                <UserInfo>
+                    <Name>{dev.name}</Name>
+                    <Techs>{dev.techs.join(', ')}</Techs>
+                </UserInfo>
+            </Header>
 
-            <p>{dev.bio}</p>
-            <a href={`https://github.com/${dev.github_username}`}>Acessar perfil</a>
-        </li>
+            <Bio>{dev.bio}</Bio>
+            <Link to={`https://github.com/${dev.github_username}`}>Acessar perfil</Link>
+        </Container>
     );
 }

@@ -1,39 +1,44 @@
-aside form {
-    margin-top: 30px;
-}
+import styled from 'styled-components';
 
-aside form .input-block + .input-block {
-    margin-top: 20px;
-}
+export const InputBlock = styled.div`
+`;
 
-aside form .input-group {
+export const InputGroup = styled.div`
     margin-top: 20px;
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 1fr;
-}
+`;
 
-aside form .input-group .input-block {
-    margin-top: 0;
-}
+export const Form = styled.form`
+    margin-top: 30px;
 
-aside form .input-block label {
+    ${InputBlock} + ${InputBlock} {
+        margin-top: 20px;
+    }
+
+    ${InputGroup} ${InputBlock} {
+        margin-top: 0 !important;
+    }
+`;
+
+export const Label = styled.label`
     color: #acacac;
     font-size: 14px;
     font-weight: bold;
     display: block;
-}
+`;
 
-aside form .input-block input {
+export const Input = styled.input`
     width: 100%;
     height: 32px;
     font-size: 14px;
     color: #666;
     border: 0;
     border-bottom: 1px solid #eee;
-}
+`;
 
-aside form button[type=submit] {
+export const Button = styled.button`
     width: 100%;
     border: 0;
     margin-top: 30px;
@@ -45,8 +50,8 @@ aside form button[type=submit] {
     color: #fff;
     cursor: pointer;
     transition: background 0.5;
-}
 
-aside form button[type=submit] {
-    background: #6931ca;
-}
+    :hover {
+        background: #6931ca;
+    }
+`;
